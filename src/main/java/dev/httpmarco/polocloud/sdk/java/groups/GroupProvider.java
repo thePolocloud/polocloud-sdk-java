@@ -1,5 +1,6 @@
 package dev.httpmarco.polocloud.sdk.java.groups;
 
+import dev.httpmarco.polocloud.sdk.java.utils.FutureConverter;
 import dev.httpmarco.polocloud.shared.groups.Group;
 import dev.httpmarco.polocloud.shared.groups.SharedGroupProvider;
 import dev.httpmarco.polocloud.v1.groups.*;
@@ -34,12 +35,12 @@ public class GroupProvider implements SharedGroupProvider<Group> {
     @Override
     @NotNull
     public CompletableFuture<List<Group>> findAllAsync() {
-        return FutureConverterKt.completableFromGuava(futureStub.find(FindGroupRequest.newBuilder().build()), findGroupResponse -> findGroupResponse.getGroupsList().stream().map(Group.Companion::from).toList());
+        return FutureConverter.completableFromGuava(futureStub.find(FindGroupRequest.newBuilder().build()), findGroupResponse -> findGroupResponse.getGroupsList().stream().map(Group.Companion::from).toList());
     }
 
     @Override
     public CompletableFuture<Group> findAsync(@NotNull String name) {
-        return FutureConverterKt.completableFromGuava(futureStub.find(FindGroupRequest.newBuilder().setName(name).build()),
+        return FutureConverter.completableFromGuava(futureStub.find(FindGroupRequest.newBuilder().setName(name).build()),
                 findGroupResponse -> findGroupResponse.getGroupsList().stream().map(Group.Companion::from).findFirst().orElse(null));
     }
 
@@ -52,7 +53,7 @@ public class GroupProvider implements SharedGroupProvider<Group> {
     @Override
     @NotNull
     public CompletableFuture<Group> createAsync(@NotNull Group group) {
-        return FutureConverterKt.completableFromGuava(futureStub.create(group.to()), Group.Companion::from);
+        return FutureConverter.completableFromGuava(futureStub.create(group.to()), Group.Companion::from);
     }
 
     @Override
@@ -62,12 +63,11 @@ public class GroupProvider implements SharedGroupProvider<Group> {
 
     @Override
     public CompletableFuture<Group> updateAsync(@NotNull Group group) {
-        return FutureConverterKt.completableFromGuava(futureStub.update(group.to()), Group.Companion::from);
+        return FutureConverter.completableFromGuava(futureStub.update(group.to()), Group.Companion::from);
     }
 
     @Override
-    @Nullable
-    public Group delete(@NotNull String name) {
-        return blockingStub.delete(GroupDeleteRequest.newBuilder().setName(name).build());
+    public boolean delete(@NotNull String name) {
+        return blockingStub.delete(GroupDeleteRequest.newBuilder().setName(name).build()).getDeleted();
     }
 }

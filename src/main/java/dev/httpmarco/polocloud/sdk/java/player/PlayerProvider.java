@@ -1,5 +1,6 @@
 package dev.httpmarco.polocloud.sdk.java.player;
 
+import dev.httpmarco.polocloud.sdk.java.utils.FutureConverter;
 import dev.httpmarco.polocloud.shared.player.PolocloudPlayer;
 import dev.httpmarco.polocloud.shared.player.SharedPlayerProvider;
 import dev.httpmarco.polocloud.shared.service.Service;
@@ -28,7 +29,7 @@ public class PlayerProvider implements SharedPlayerProvider<PolocloudPlayer> {
 
     @Override
     public @NotNull CompletableFuture<List<PolocloudPlayer>> findAllAsync() {
-        return FutureConverterKt.completableFromGuava(this.futureStub.findAll(PlayerFindRequest.newBuilder().build()), findAllPlayerResponse -> findAllPlayerResponse.getPlayersList().stream().map(PolocloudPlayer.Companion::bindSnapshot).toList());
+        return FutureConverter.completableFromGuava(this.futureStub.findAll(PlayerFindRequest.newBuilder().build()), findAllPlayerResponse -> findAllPlayerResponse.getPlayersList().stream().map(PolocloudPlayer.Companion::bindSnapshot).toList());
     }
 
     @Override
@@ -40,7 +41,7 @@ public class PlayerProvider implements SharedPlayerProvider<PolocloudPlayer> {
     @Override
     @NotNull
     public CompletableFuture<PolocloudPlayer> findByNameAsync(@NotNull String name) {
-        return FutureConverterKt.completableFromGuava(this.futureStub.findByName(PlayerFindByNameRequest.newBuilder().setName(name).build()),
+        return FutureConverter.completableFromGuava(this.futureStub.findByName(PlayerFindByNameRequest.newBuilder().setName(name).build()),
                 findGroupResponse -> findGroupResponse.getPlayersList().stream().map(PolocloudPlayer.Companion::from).findFirst().orElse(null));
     }
 
@@ -53,7 +54,7 @@ public class PlayerProvider implements SharedPlayerProvider<PolocloudPlayer> {
     @Override
     @NotNull
     public CompletableFuture<List<PolocloudPlayer>> findByServiceAsync(@NotNull Service service) {
-        return FutureConverterKt.completableFromGuava(this.futureStub.findByService(PlayerFindByServiceRequest.newBuilder().setCurrentServiceName(service.name()).build()),
+        return FutureConverter.completableFromGuava(this.futureStub.findByService(PlayerFindByServiceRequest.newBuilder().setCurrentServiceName(service.name()).build()),
                 findByServiceRequest -> findByServiceRequest.getPlayersList().stream().map(PolocloudPlayer.Companion::from).toList());
     }
 

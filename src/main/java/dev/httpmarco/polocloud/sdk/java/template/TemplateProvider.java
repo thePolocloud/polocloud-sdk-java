@@ -1,6 +1,6 @@
 package dev.httpmarco.polocloud.sdk.java.template;
 
-import dev.httpmarco.polocloud.common.future.FutureConverterKt;
+import dev.httpmarco.polocloud.sdk.java.utils.FutureConverter;
 import dev.httpmarco.polocloud.shared.template.SharedTemplateProvider;
 import dev.httpmarco.polocloud.shared.template.Template;
 import dev.httpmarco.polocloud.v1.templates.TemplateControllerGrpc;
@@ -35,12 +35,12 @@ public final class TemplateProvider implements SharedTemplateProvider<Template> 
 
     @Override
     public @NotNull CompletableFuture<List<Template>> findAllAsync() {
-        return FutureConverterKt.completableFromGuava(futureStub.find(TemplateFindRequest.getDefaultInstance()), it -> it.getTemplateList().stream().map(Template.Companion::from).toList());
+        return FutureConverter.completableFromGuava(futureStub.find(TemplateFindRequest.getDefaultInstance()), it -> it.getTemplateList().stream().map(Template.Companion::from).toList());
     }
 
     @Override
     @NotNull
     public CompletableFuture<Template> findAsync(@NotNull String name) {
-        return FutureConverterKt.completableFromGuava(futureStub.find(TemplateFindRequest.newBuilder().setName(name).build()), it -> it.getTemplateList().stream().map(Template.Companion::from).findFirst().orElse(null));
+        return FutureConverter.completableFromGuava(futureStub.find(TemplateFindRequest.newBuilder().setName(name).build()), it -> it.getTemplateList().stream().map(Template.Companion::from).findFirst().orElse(null));
     }
 }

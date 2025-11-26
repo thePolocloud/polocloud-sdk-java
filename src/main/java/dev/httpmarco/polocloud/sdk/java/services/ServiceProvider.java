@@ -1,6 +1,7 @@
 package dev.httpmarco.polocloud.sdk.java.services;
 
 import dev.httpmarco.polocloud.sdk.java.Polocloud;
+import dev.httpmarco.polocloud.sdk.java.utils.FutureConverter;
 import dev.httpmarco.polocloud.shared.groups.Group;
 import dev.httpmarco.polocloud.shared.service.Service;
 import dev.httpmarco.polocloud.shared.service.SharedBootConfiguration;
@@ -52,13 +53,13 @@ public final class ServiceProvider implements SharedServiceProvider<Service> {
 
     @Override
     public @NotNull CompletableFuture<List<Service>> findAllAsync() {
-        return FutureConverterKt.completableFromGuava(futureStub.find(ServiceFindRequest.getDefaultInstance()), it -> it.getServicesList().stream().map(Service.Companion::fromSnapshot).toList());
+        return FutureConverter.completableFromGuava(futureStub.find(ServiceFindRequest.getDefaultInstance()), it -> it.getServicesList().stream().map(Service.Companion::fromSnapshot).toList());
     }
 
     @Override
     @NotNull
     public CompletableFuture<Service> findAsync(@NotNull String name) {
-        return FutureConverterKt.completableFromGuava(futureStub.find(ServiceFindRequest.newBuilder().setName(name).build()), it -> it.getServicesList().stream().map(Service.Companion::fromSnapshot).findFirst().orElse(null));
+        return FutureConverter.completableFromGuava(futureStub.find(ServiceFindRequest.newBuilder().setName(name).build()), it -> it.getServicesList().stream().map(Service.Companion::fromSnapshot).findFirst().orElse(null));
     }
 
     @Override
@@ -70,7 +71,7 @@ public final class ServiceProvider implements SharedServiceProvider<Service> {
     @Override
     @NotNull
     public CompletableFuture<List<Service>> findByGroupAsync(@NotNull String group) {
-        return FutureConverterKt.completableFromGuava(futureStub.find(ServiceFindRequest.newBuilder().setGroupName(group).build()), it -> it.getServicesList().stream().map(Service.Companion::fromSnapshot).toList());
+        return FutureConverter.completableFromGuava(futureStub.find(ServiceFindRequest.newBuilder().setGroupName(group).build()), it -> it.getServicesList().stream().map(Service.Companion::fromSnapshot).toList());
     }
 
     @NotNull
@@ -121,7 +122,7 @@ public final class ServiceProvider implements SharedServiceProvider<Service> {
     @Override
     @NotNull
     public CompletableFuture<List<Service>> findByTypeAsync(@NotNull GroupType type) {
-        return FutureConverterKt.completableFromGuava(futureStub.find(ServiceFindRequest.newBuilder().setType(type).build()), it -> it.getServicesList().stream().map(Service.Companion::fromSnapshot).toList());
+        return FutureConverter.completableFromGuava(futureStub.find(ServiceFindRequest.newBuilder().setType(type).build()), it -> it.getServicesList().stream().map(Service.Companion::fromSnapshot).toList());
     }
 
     @NotNull
