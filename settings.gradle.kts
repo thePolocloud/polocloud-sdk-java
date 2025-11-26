@@ -1,1 +1,1 @@
-rootProject.name = "polocloud-sdk-java"
+rootProject.name = "sdk-java"
