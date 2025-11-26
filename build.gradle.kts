@@ -3,7 +3,7 @@ plugins {
 }
 
 group = "dev.httpmarco.polocloud"
-version = "3.0.0-pre.7.3-SNAPSHOT"
+version = "3.0.0-pre.8-SNAPSHOT"
 
 repositories {
     mavenCentral()
