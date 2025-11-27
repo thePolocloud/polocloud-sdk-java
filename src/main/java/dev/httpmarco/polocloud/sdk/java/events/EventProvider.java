@@ -2,6 +2,7 @@ package dev.httpmarco.polocloud.sdk.java.events;
 
 import dev.httpmarco.polocloud.sdk.java.Polocloud;
 import dev.httpmarco.polocloud.shared.events.Event;
+import dev.httpmarco.polocloud.shared.events.EventCallback;
 import dev.httpmarco.polocloud.shared.events.SharedEventProvider;
 import dev.httpmarco.polocloud.v1.proto.EventProviderGrpc;
 import dev.httpmarco.polocloud.v1.proto.EventProviderOuterClass;
@@ -52,7 +53,7 @@ public final class EventProvider extends SharedEventProvider {
     }
 
     @Override
-    public <T extends Event> void subscribe(@NotNull Class<T> eventType, @NotNull EventCallback<? super T, ?> result) {
+    public <T extends Event> void subscribe(@NotNull Class<T> eventType, @NotNull EventCallback<T> result) {
         EventProviderOuterClass.EventSubscribeRequest request =
                 EventProviderOuterClass.EventSubscribeRequest.newBuilder()
                         .setServiceName(polocloud.selfServiceName())
