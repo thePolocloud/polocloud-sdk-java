@@ -1,5 +1,6 @@
 plugins {
     id("io.github.gradle-nexus.publish-plugin") version "2.0.0"
+    id("com.gradleup.shadow") version "9.2.2"
     id("java-library")
     `maven-publish`
 }
@@ -31,7 +32,7 @@ publishing {
     publications {
         create<MavenPublication>("mavenJava") {
 
-            artifact(tasks.jar.get())
+            artifact(tasks.shadowJar.get())
 
             pom {
                 name.set("polocloud-proto")
