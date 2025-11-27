@@ -20,5 +20,7 @@ dependencies {
 
     api("dev.httpmarco.polocloud:proto:3.0.0-pre.8-SNAPSHOT")
     api("dev.httpmarco.polocloud:shared:3.0.0-pre.8-SNAPSHOT")
-    implementation("org.jetbrains:annotations:26.0.2-1")
+
+    compileOnly("com.google.code.gson:gson:2.13.2")
+    compileOnly("org.jetbrains:annotations:26.0.2-1")
 }
