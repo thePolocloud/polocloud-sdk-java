@@ -18,7 +18,7 @@ repositories {
 }
 
 tasks.shadowJar {
-    archiveClassifier.set("")
+    archiveClassifier.set(null)
 }
 
 tasks.jar {
@@ -79,5 +79,5 @@ nexusPublishing {
             password.set(System.getenv("ossrhPassword") ?: "")
         }
     }
-    useStaging.set(!project.rootProject.version.toString().endsWith("-SNAPSHOT"))
+    useStaging.set(!version.toString().endsWith("-SNAPSHOT"))
 }
