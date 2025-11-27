@@ -52,7 +52,7 @@ public final class EventProvider extends SharedEventProvider {
     }
 
     @Override
-    public <T extends Event> void subscribe(@NotNull Class<T> eventType, @NotNull Function1<? super T, ?> result) {
+    public <T extends Event> void subscribe(@NotNull Class<T> eventType, @NotNull EventCallback<? super T, ?> result) {
         EventProviderOuterClass.EventSubscribeRequest request =
                 EventProviderOuterClass.EventSubscribeRequest.newBuilder()
                         .setServiceName(polocloud.selfServiceName())
@@ -62,7 +62,7 @@ public final class EventProvider extends SharedEventProvider {
         eventStub.withWaitForReady().subscribe(request, new StreamObserver<>() {
             @Override
             public void onNext(EventProviderOuterClass.EventContext context) {
-                result.invoke(getGsonSerializer().fromJson(context.getEventData(), eventType));
+                result.call(getGsonSerializer().fromJson(context.getEventData(), eventType));
             }
 
             @Override

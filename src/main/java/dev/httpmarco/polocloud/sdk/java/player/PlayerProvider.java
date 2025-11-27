@@ -29,7 +29,7 @@ public class PlayerProvider implements SharedPlayerProvider<PolocloudPlayer> {
 
     @Override
     public @NotNull CompletableFuture<List<PolocloudPlayer>> findAllAsync() {
-        return FutureConverter.completableFromGuava(this.futureStub.findAll(PlayerFindRequest.newBuilder().build()), findAllPlayerResponse -> findAllPlayerResponse.getPlayersList().stream().map(PolocloudPlayer.Companion::bindSnapshot).toList());
+        return FutureConverter.completableFromGuava(this.futureStub.findAll(PlayerFindRequest.newBuilder().build()), findAllPlayerResponse -> findAllPlayerResponse.getPlayersList().stream().map(PolocloudPlayer.Companion::from).toList());
     }
 
     @Override
