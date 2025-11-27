@@ -21,6 +21,10 @@ tasks.shadowJar {
     archiveClassifier.set("")
 }
 
+tasks.jar {
+    enabled = false
+}
+
 dependencies {
     api("io.grpc:grpc-services:1.77.0")
     api("io.grpc:grpc-netty-shaded:1.77.0")
