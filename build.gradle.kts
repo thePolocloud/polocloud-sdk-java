@@ -43,7 +43,6 @@ publishing {
             artifact(tasks.shadowJar.get())
 
             pom {
-                name.set("polocloud-proto")
                 description.set("PoloCloud gRPC API with bundled dependencies")
                 url.set("https://github.com/thePolocloud/polocloud")
 
