@@ -2,6 +2,7 @@ plugins {
     id("io.github.gradle-nexus.publish-plugin") version "2.0.0"
     id("com.gradleup.shadow") version "9.2.2"
     id("java-library")
+    id("signing")
     `maven-publish`
 }
 
@@ -38,9 +39,15 @@ dependencies {
 
 publishing {
     publications {
-        create<MavenPublication>("mavenJava") {
+        create<MavenPublication>("maven") {
 
-            artifact(tasks.shadowJar.get())
+            // Falls du Java-Projekt hast:
+            from(components["java"])
+
+            // Shadow JAR als Hauptartefakt überschreiben
+            artifact(tasks.named("shadowJar")) {
+                classifier = null  // macht es zum *haupt*-Artefakt (statt m.jar oder m-all.jar)
+            }
 
             pom {
                 description.set("PoloCloud gRPC API with bundled dependencies")
@@ -66,6 +73,10 @@ publishing {
             }
         }
     }
+}
+
+signing {
+    sign(publishing.publications["maven"])
 }
 
 nexusPublishing {
