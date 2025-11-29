@@ -2,7 +2,6 @@ plugins {
     id("io.github.gradle-nexus.publish-plugin") version "2.0.0"
     id("com.gradleup.shadow") version "9.2.2"
     id("java-library")
-    id("signing")
     `maven-publish`
 }
 
@@ -73,10 +72,6 @@ publishing {
             }
         }
     }
-}
-
-signing {
-    sign(publishing.publications["maven"])
 }
 
 nexusPublishing {
