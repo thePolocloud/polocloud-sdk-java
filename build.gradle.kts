@@ -10,7 +10,6 @@ version = "3.0.0-pre.8-SNAPSHOT"
 
 repositories {
     mavenCentral()
-
     maven {
         name = "polocloud-snapshots"
         url = uri("https://central.sonatype.com/repository/maven-snapshots/")
@@ -19,6 +18,7 @@ repositories {
 
 tasks.shadowJar {
     archiveClassifier.set(null)
+    configurations = listOf(project.configurations.api.get())
 }
 
 tasks.jar {
@@ -46,13 +46,27 @@ java {
 publishing {
     publications {
         create<MavenPublication>("maven") {
-            from(components["java"])
-
-            artifact(tasks.named("shadowJar")) {
+            artifact(tasks.shadowJar) {
                 classifier = null
             }
 
+            artifact(tasks.shadowJar)
+
             pom {
+                withXml {
+                    val dependenciesNode = asNode().appendNode("dependencies")
+
+                    configurations.api.get().allDependencies.forEach { dep ->
+                        if (dep.group != null && dep.name != null && dep.version != null) {
+                            val dependencyNode = dependenciesNode.appendNode("dependency")
+                            dependencyNode.appendNode("groupId", dep.group)
+                            dependencyNode.appendNode("artifactId", dep.name)
+                            dependencyNode.appendNode("version", dep.version)
+                            dependencyNode.appendNode("scope", "compile")
+                        }
+                    }
+                }
+
                 description.set("PoloCloud gRPC API with bundled dependencies")
                 url.set("https://github.com/thePolocloud/polocloud")
 
