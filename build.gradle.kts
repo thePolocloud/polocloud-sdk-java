@@ -1,6 +1,6 @@
 plugins {
     id("io.github.gradle-nexus.publish-plugin") version "2.0.0"
-    id("com.gradleup.shadow") version "9.2.2"
+    id("com.gradleup.shadow") version "9.0.0"
     id("java-library")
     `maven-publish`
 }
@@ -39,13 +39,10 @@ dependencies {
 publishing {
     publications {
         create<MavenPublication>("maven") {
-
-            // Falls du Java-Projekt hast:
             from(components["java"])
 
-            // Shadow JAR als Hauptartefakt überschreiben
             artifact(tasks.named("shadowJar")) {
-                classifier = null  // macht es zum *haupt*-Artefakt (statt m.jar oder m-all.jar)
+                classifier = null
             }
 
             pom {
