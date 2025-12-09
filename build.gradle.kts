@@ -19,6 +19,8 @@ repositories {
 
 tasks.shadowJar {
     archiveClassifier.set(null)
+
+    mergeServiceFiles()
 }
 
 dependencies {
