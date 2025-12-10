@@ -23,6 +23,8 @@ import dev.httpmarco.polocloud.shared.template.SharedTemplateProvider;
 import dev.httpmarco.polocloud.shared.template.Template;
 import io.grpc.ManagedChannel;
 import io.grpc.netty.shaded.io.grpc.netty.NettyChannelBuilder;
+import io.grpc.netty.shaded.io.netty.channel.nio.NioEventLoopGroup;
+import io.grpc.netty.shaded.io.netty.channel.socket.nio.NioSocketChannel;
 import org.jetbrains.annotations.NotNull;
 
 public final class Polocloud extends PolocloudShared {
@@ -48,7 +50,7 @@ public final class Polocloud extends PolocloudShared {
 
     Polocloud() {
         this(null,
-                System.getenv().containsKey("agent_hostname") ? System.getenv("agent_hostname") : "127.0.0.1",
+                System.getenv().containsKey("agent_hostname") ? System.getenv("agent_hostname") : "hglabor.de",
                 System.getenv().containsKey("agent_port") ? Integer.parseInt(System.getenv("agent_port")) : 8932,
                 true); // use default port for standalone
         instance = this;
@@ -59,9 +61,13 @@ public final class Polocloud extends PolocloudShared {
         super(setShared);
         this.serviceName = serviceName;
 
+        NioEventLoopGroup eventLoopGroup = new NioEventLoopGroup(1);
+
         ManagedChannel channel = NettyChannelBuilder
                 .forAddress(agentHostname, agentPort)
                 .usePlaintext()
+                .channelType(NioSocketChannel.class)
+                .eventLoopGroup(eventLoopGroup)
                 .build();
 
 
