@@ -80,4 +80,15 @@ public class PlayerProvider implements SharedPlayerProvider<PolocloudPlayer> {
     public @NotNull PlayerActorResponse connectPlayerToService(@NotNull UUID uniqueId, @NotNull String serviceName) {
         return this.blockingStub.connectPlayer(PlayerConnectActorRequest.newBuilder().setUniqueId(uniqueId.toString()).setTargetServiceName(serviceName).build());
     }
+
+    @Override
+    public @Nullable PolocloudPlayer findByUniqueId(@NotNull UUID uuid) {
+        return this.blockingStub.findByUniqueID(PlayerFindByUniqueIdRequest.newBuilder().setUniqueId(uuid.toString()).build()).getPlayersList().stream().map(PolocloudPlayer.Companion::from).findFirst().orElse(null);
+    }
+
+    @Override
+    public @NotNull CompletableFuture<PolocloudPlayer> findByUniqueIdAsync(@NotNull UUID uuid) {
+        return FutureConverter.completableFromGuava(this.futureStub.findByUniqueID(PlayerFindByUniqueIdRequest.newBuilder().setUniqueId(uuid.toString()).build()),
+                findGroupResponse -> findGroupResponse.getPlayersList().stream().map(PolocloudPlayer.Companion::from).findFirst().orElse(null));
+    }
 }
