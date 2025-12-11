@@ -1,5 +1,6 @@
 package dev.httpmarco.polocloud.sdk.java.player;
 
+import com.google.protobuf.Empty;
 import dev.httpmarco.polocloud.sdk.java.utils.FutureConverter;
 import dev.httpmarco.polocloud.shared.player.PolocloudPlayer;
 import dev.httpmarco.polocloud.shared.player.SharedPlayerProvider;
@@ -10,6 +11,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 public class PlayerProvider implements SharedPlayerProvider<PolocloudPlayer> {
@@ -24,12 +26,12 @@ public class PlayerProvider implements SharedPlayerProvider<PolocloudPlayer> {
 
     @Override
     public @NotNull List<PolocloudPlayer> findAll() {
-        return this.blockingStub.findAll(PlayerFindRequest.getDefaultInstance()).getPlayersList().stream().map(PolocloudPlayer.Companion::from).toList();
+        return this.blockingStub.findAll(Empty.getDefaultInstance()).getPlayersList().stream().map(PolocloudPlayer.Companion::from).toList();
     }
 
     @Override
     public @NotNull CompletableFuture<List<PolocloudPlayer>> findAllAsync() {
-        return FutureConverter.completableFromGuava(this.futureStub.findAll(PlayerFindRequest.newBuilder().build()), findAllPlayerResponse -> findAllPlayerResponse.getPlayersList().stream().map(PolocloudPlayer.Companion::from).toList());
+        return FutureConverter.completableFromGuava(this.futureStub.findAll(Empty.getDefaultInstance()), findAllPlayerResponse -> findAllPlayerResponse.getPlayersList().stream().map(PolocloudPlayer.Companion::from).toList());
     }
 
     @Override
@@ -60,8 +62,22 @@ public class PlayerProvider implements SharedPlayerProvider<PolocloudPlayer> {
 
     @Override
     public int playerCount() {
-        return this.blockingStub
-                .playerCount(PlayerCountRequest.getDefaultInstance())
-                .getCount();
+        return this.blockingStub.playerCount(Empty.getDefaultInstance()).getCount();
+    }
+
+
+    @Override
+    public @NotNull PlayerActorResponse messagePlayer(@NotNull UUID uniqueId, @NotNull String message) {
+        return this.blockingStub.messagePlayer(PlayerMessageActorRequest.newBuilder().setUniqueId(uniqueId.toString()).setMessage(message).build());
+    }
+
+    @Override
+    public @NotNull PlayerActorResponse kickPlayer(@NotNull UUID uniqueId, @NotNull String message) {
+        return this.blockingStub.kickPlayer(PlayerMessageActorRequest.newBuilder().setUniqueId(uniqueId.toString()).setMessage(message).build());
+    }
+
+    @Override
+    public @NotNull PlayerActorResponse connectPlayerToService(@NotNull UUID uniqueId, @NotNull String serviceName) {
+        return this.blockingStub.connectPlayer(PlayerConnectActorRequest.newBuilder().setUniqueId(uniqueId.toString()).setTargetServiceName(serviceName).build());
     }
 }
