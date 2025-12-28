@@ -1,6 +1,6 @@
 plugins {
     id("io.github.gradle-nexus.publish-plugin") version "2.0.0"
-    id("com.gradleup.shadow") version "9.3.0"
+    id("com.gradleup.shadow") version "9.0.0"
     id("java-library")
     `maven-publish`
 }
