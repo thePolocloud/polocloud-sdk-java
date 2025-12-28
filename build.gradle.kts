@@ -45,7 +45,9 @@ java {
 publishing {
     publications {
         create<MavenPublication>("maven") {
-            from(components["java"])
+            artifact(tasks.named("shadowJar")) {
+                classifier = null
+            }
 
             pom {
                 description.set("PoloCloud gRPC API with bundled dependencies")
