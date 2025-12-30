@@ -31,8 +31,8 @@ dependencies {
     api("dev.httpmarco.polocloud:proto:3.0.0-pre.7-SNAPSHOT")
     api("dev.httpmarco.polocloud:shared:3.0.0-pre.7-SNAPSHOT")
 
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.24")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:1.9.24")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:2.3.0")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:2.3.0")
 
     compileOnly("com.google.code.gson:gson:2.13.2")
     compileOnly("org.jetbrains:annotations:26.0.2-1")
