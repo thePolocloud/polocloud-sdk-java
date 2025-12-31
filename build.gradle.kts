@@ -28,8 +28,8 @@ dependencies {
     api("io.grpc:grpc-services:1.78.0")
     api("io.grpc:grpc-netty-shaded:1.78.0")
 
-    api("dev.httpmarco.polocloud:proto:3.0.0-pre.7-SNAPSHOT")
-    api("dev.httpmarco.polocloud:shared:3.0.0-pre.7-SNAPSHOT")
+    api("dev.httpmarco.polocloud:proto:3.0.0-pre.8-SNAPSHOT")
+    api("dev.httpmarco.polocloud:shared:3.0.0-pre.8-SNAPSHOT")
 
     implementation("org.jetbrains.kotlin:kotlin-stdlib:2.3.0")
     implementation("org.jetbrains.kotlin:kotlin-reflect:2.3.0")
