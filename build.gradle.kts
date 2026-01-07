@@ -9,7 +9,6 @@ group = "dev.httpmarco.polocloud"
 version = "3.0.0-pre.7-SNAPSHOT"
 
 repositories {
-    mavenLocal()
     mavenCentral()
 
     maven {

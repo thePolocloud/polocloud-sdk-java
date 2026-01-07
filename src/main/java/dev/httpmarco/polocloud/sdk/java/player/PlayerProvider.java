@@ -74,7 +74,7 @@ public class PlayerProvider implements SharedPlayerProvider<PolocloudPlayer> {
 
     @Override
     public @NotNull PlayerActorResponse kickPlayer(@NotNull UUID uniqueId, @NotNull String message) {
-        return this.blockingStub.kickPlayer(PlayerMessageActorRequest.newBuilder().setUniqueId(uniqueId.toString()).setMessage(message).build());
+        return this.blockingStub.kickPlayer(PlayerKickActorRequest.newBuilder().setUniqueId(uniqueId.toString()).setReason(message).build());
     }
 
     @Override
