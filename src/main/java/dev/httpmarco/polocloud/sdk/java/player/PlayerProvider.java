@@ -1,6 +1,7 @@
 package dev.httpmarco.polocloud.sdk.java.player;
 
 import com.google.protobuf.Empty;
+import dev.httpmarco.polocloud.sdk.java.Polocloud;
 import dev.httpmarco.polocloud.sdk.java.utils.FutureConverter;
 import dev.httpmarco.polocloud.shared.player.PolocloudPlayer;
 import dev.httpmarco.polocloud.shared.player.SharedPlayerProvider;
@@ -90,5 +91,9 @@ public class PlayerProvider implements SharedPlayerProvider<PolocloudPlayer> {
     public @NotNull CompletableFuture<PolocloudPlayer> findByUniqueIdAsync(@NotNull UUID uuid) {
         return FutureConverter.completableFromGuava(this.futureStub.findByUniqueID(PlayerFindByUniqueIdRequest.newBuilder().setUniqueId(uuid.toString()).build()),
                 findGroupResponse -> findGroupResponse.getPlayersList().stream().map(PolocloudPlayer.Companion::from).findFirst().orElse(null));
+    }
+
+    public void verifyActorStreaming() {
+        this.blockingStub.actorStreaming(PlayerActorIdentifier.newBuilder().setServiceName(Polocloud.instance().selfServiceName()).build());
     }
 }
