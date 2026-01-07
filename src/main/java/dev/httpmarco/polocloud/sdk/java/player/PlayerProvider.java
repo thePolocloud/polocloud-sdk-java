@@ -8,19 +8,23 @@ import dev.httpmarco.polocloud.shared.player.SharedPlayerProvider;
 import dev.httpmarco.polocloud.shared.service.Service;
 import dev.httpmarco.polocloud.v1.player.*;
 import io.grpc.ManagedChannel;
+import io.grpc.stub.StreamObserver;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
 
 public class PlayerProvider implements SharedPlayerProvider<PolocloudPlayer> {
 
+    private final PlayerControllerGrpc.PlayerControllerStub stub;
     private final PlayerControllerGrpc.PlayerControllerBlockingStub blockingStub;
     private final PlayerControllerGrpc.PlayerControllerFutureStub futureStub;
 
     public PlayerProvider(ManagedChannel channel) {
+        this.stub = PlayerControllerGrpc.newStub(channel);
         this.blockingStub = PlayerControllerGrpc.newBlockingStub(channel);
         this.futureStub = PlayerControllerGrpc.newFutureStub(channel);
     }
@@ -93,7 +97,21 @@ public class PlayerProvider implements SharedPlayerProvider<PolocloudPlayer> {
                 findGroupResponse -> findGroupResponse.getPlayersList().stream().map(PolocloudPlayer.Companion::from).findFirst().orElse(null));
     }
 
-    public void verifyActorStreaming() {
-        this.blockingStub.actorStreaming(PlayerActorIdentifier.newBuilder().setServiceName(Polocloud.instance().selfServiceName()).build());
+    public void verifyActorStreaming(Consumer<StreamingAlert> nextActor) {
+        stub.withWaitForReady().actorStreaming(PlayerActorIdentifier.newBuilder().setServiceName(Polocloud.instance().selfServiceName()).build(), new StreamObserver<>() {
+            @Override
+            public void onNext(StreamingAlert streamingAlert) {
+                nextActor.accept(streamingAlert);
+            }
+
+            @Override
+            public void onError(Throwable t) {
+            }
+
+            @Override
+            public void onCompleted() {
+                // No action needed on completion
+            }
+        });
     }
 }
