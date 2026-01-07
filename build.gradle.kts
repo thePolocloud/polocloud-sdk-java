@@ -1,12 +1,12 @@
 plugins {
     id("io.github.gradle-nexus.publish-plugin") version "2.0.0"
-    id("com.gradleup.shadow") version "9.3.0"
+    id("com.gradleup.shadow") version "9.0.0"
     id("java-library")
     `maven-publish`
 }
 
 group = "dev.httpmarco.polocloud"
-version = "3.0.0-pre.8-SNAPSHOT"
+version = "3.0.0-pre.7-SNAPSHOT"
 
 repositories {
     mavenLocal()
@@ -25,14 +25,18 @@ tasks.shadowJar {
 }
 
 dependencies {
-    api("io.grpc:grpc-services:1.77.0")
-    api("io.grpc:grpc-netty-shaded:1.77.0")
+    api("io.grpc:grpc-services:1.78.0")
+    api("io.grpc:grpc-netty-shaded:1.78.0")
 
-    api("dev.httpmarco.polocloud:proto:3.0.0-pre.8-SNAPSHOT")
-    api("dev.httpmarco.polocloud:shared:3.0.0-pre.8-SNAPSHOT")
+    api("dev.httpmarco.polocloud:proto:3.0.0-pre.7-SNAPSHOT")
+    api("dev.httpmarco.polocloud:shared:3.0.0-pre.7-SNAPSHOT")
+
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:2.3.0")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:2.3.0")
 
     compileOnly("com.google.code.gson:gson:2.13.2")
     compileOnly("org.jetbrains:annotations:26.0.2-1")
+
 }
 
 java {
@@ -45,7 +49,9 @@ java {
 publishing {
     publications {
         create<MavenPublication>("maven") {
-            from(components["java"])
+            artifact(tasks.named("shadowJar")) {
+                classifier = null
+            }
 
             pom {
                 description.set("PoloCloud gRPC API with bundled dependencies")
