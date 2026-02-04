@@ -24,8 +24,8 @@ tasks.shadowJar {
 }
 
 dependencies {
-    api("io.grpc:grpc-services:1.78.0")
-    api("io.grpc:grpc-netty-shaded:1.78.0")
+    api("io.grpc:grpc-services:1.79.0")
+    api("io.grpc:grpc-netty-shaded:1.79.0")
 
     api("dev.httpmarco.polocloud:proto:$version")
     api("dev.httpmarco.polocloud:shared:$version")
