@@ -30,8 +30,8 @@ dependencies {
     api("dev.httpmarco.polocloud:proto:$version")
     api("dev.httpmarco.polocloud:shared:$version")
 
-    implementation("org.jetbrains.kotlin:kotlin-stdlib:2.3.0")
-    implementation("org.jetbrains.kotlin:kotlin-reflect:2.3.0")
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:2.3.10")
+    implementation("org.jetbrains.kotlin:kotlin-reflect:2.3.10")
 
     compileOnly("com.google.code.gson:gson:2.13.2")
     compileOnly("org.jetbrains:annotations:26.0.2-1")
